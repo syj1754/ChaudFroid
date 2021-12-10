@@ -52,9 +52,9 @@
             android:height="48dp"
             android:ems="10"
             android:gravity="center_vertical"
-            android:inputType="textPersonName"
+            android:inputType="none"
             android:minHeight="48dp"
-            android:text="11:22:33:44:55:66" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ProgressBar
             android:id="@+id/progressBar"
