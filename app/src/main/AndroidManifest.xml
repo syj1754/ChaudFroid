@@ -9,6 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChaudFroid">
+        <service
+            android:name=".TestService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".SkanService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
