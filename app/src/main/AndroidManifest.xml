@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chaudfroid">
 
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChaudFroid">
-        <service
-            android:name=".TestService"
-            android:enabled="true"
-            android:exported="true"></service>
         <service
             android:name=".SkanService"
             android:enabled="true"
