@@ -2,8 +2,12 @@ package com.example.chaudfroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,5 +50,20 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         }, 0, 10);
+    }
+    private void callService(){
+        Intent intentService=new Intent(this, SkanService.class);
+        ServiceConnection serviceConnection=new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(intentService, serviceConnection , BIND_AUTO_CREATE);
     }
 }

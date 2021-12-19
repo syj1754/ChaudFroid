@@ -5,7 +5,10 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanRecord;
+import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +24,7 @@ import androidx.annotation.RequiresApi;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Object;
+import java.util.Queue;
 
 public class SkanService extends Service {
     private ScanBinder scanBinder;
@@ -52,6 +56,8 @@ public class SkanService extends Service {
     public class ScanBinder extends Binder {
         public String msg;
 
+        public ArrayList<ScanResult> scanResults;
+
     }
     /**
      * Scan for peripherals that have any of the specified peripheral mac addresses.
@@ -66,7 +72,7 @@ public class SkanService extends Service {
         ScanSettings.Builder settingBuilder = new ScanSettings.Builder();
         settingBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);;
         ScanSettings settings = settingBuilder.build();
-        PendingIntent callbackIntent = PendingIntent.getForegroundService(
+        PendingIntent callbackIntent = PendingIntent.getActivity(
                 this,
                 1,
                 new Intent("com.example.chaudfroid").setPackage(getPackageName()),
@@ -82,7 +88,18 @@ public class SkanService extends Service {
                 }
             }
         }
+        ScanCallback scanCallback = new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
+                super.onScanResult(callbackType, result);
+                if(scanBinder.scanResults.size()==5){
+                    scanBinder.scanResults.remove(5);
+                }
+                scanBinder.scanResults.add(0,result);
 
-        bluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, callbackIntent);
+            }
+        };
+        //bluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, callbackIntent);
+        bluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, scanCallback);
     }
 }

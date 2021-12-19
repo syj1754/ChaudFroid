@@ -2,9 +2,13 @@ package com.example.chaudfroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.le.ScanResult;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Debug;
+import android.os.IBinder;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -13,11 +17,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.Console;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.chaudfroid.MESSAGE";
+    private Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,13 +99,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
     private void SkanStart() {
         Intent intentService=new Intent(this, SkanService.class);
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
         String message = editText.getText().toString();
         intentService.putExtra(EXTRA_MESSAGE, message);
         startService(intentService);
+        timer =new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                callService();
+            }
+        }, 0, 100);
     }
 
     public void startSearch(View view) {
@@ -112,4 +130,26 @@ public class MainActivity extends AppCompatActivity {
             frameCenter.setVisibility(View.VISIBLE);
         }
     }
+    private void callService(){
+        Intent intentService=new Intent(this, SkanService.class);
+        ServiceConnection serviceConnection=new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                int rssi=((SkanService.ScanBinder) service).scanResults.get(0).getRssi();
+                TextView textViewRssi= (TextView)findViewById(R.id.signal_strength);
+                textViewRssi.setText(rssi + " dbm");
+                String mac=((SkanService.ScanBinder) service).msg;
+                TextView textViewMac= (TextView)findViewById(R.id.mac_address);
+                textViewMac.setText(mac);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(intentService, serviceConnection , BIND_AUTO_CREATE);
+    }
+
+
 }
