@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if((dstart%3)==2){
                     length++;
+                }else if(dstart+source.length()==17){
+                    length--;
                 }
                 char[] newChar = new char[length];
                 int j=0,k=0,f=0;
@@ -70,7 +72,16 @@ public class MainActivity extends AppCompatActivity {
                         f--;
                     }
                 }
+                /*int x[]=new int[length];
+                String test=new String();
+                for(int i=0;i<length;i++){
+                    x[i]=(int)newChar[i];
+                    test+=x[i];
+                    test+=" ";
 
+                }
+                TextView textViewRssi= (TextView)findViewById(R.id.device_name);
+                textViewRssi.setText(test);*/
                 return new String(newChar);
             }
         };
@@ -115,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 callService();
             }
-        }, 0, 100);
+        }, 50, 50);
     }
 
     public void startSearch(View view) {
@@ -135,12 +146,21 @@ public class MainActivity extends AppCompatActivity {
         ServiceConnection serviceConnection=new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                int rssi=((SkanService.ScanBinder) service).scanResults.get(0).getRssi();
-                TextView textViewRssi= (TextView)findViewById(R.id.signal_strength);
-                textViewRssi.setText(rssi + " dbm");
-                String mac=((SkanService.ScanBinder) service).msg;
-                TextView textViewMac= (TextView)findViewById(R.id.mac_address);
-                textViewMac.setText(mac);
+                if(((SkanService.ScanBinder) service).scanResults.isEmpty()){
+                    TextView textViewRssi= (TextView)findViewById(R.id.signal_strength);
+                    textViewRssi.setText(0 + " dbm");
+                    TextView textViewMac= (TextView)findViewById(R.id.mac_address);
+                    textViewMac.setText("NULL");
+                }else{
+                    int rssi=((SkanService.ScanBinder) service).scanResults.get(0).getRssi();
+                    TextView textViewRssi= (TextView)findViewById(R.id.signal_strength);
+                    textViewRssi.setText(rssi + " dbm");
+                    EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
+                    String mac = ((SkanService.ScanBinder) service).scanResults.get(0).getDevice().getAddress();
+                    //String mac = editText.getText().toString();
+                    TextView textViewMac= (TextView)findViewById(R.id.mac_address);
+                    textViewMac.setText(mac);
+                }
             }
 
             @Override

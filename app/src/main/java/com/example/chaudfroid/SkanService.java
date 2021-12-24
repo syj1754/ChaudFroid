@@ -54,6 +54,11 @@ public class SkanService extends Service {
         return scanBinder;
     }
     public class ScanBinder extends Binder {
+        public ScanBinder(){
+            super();
+            msg= new String();
+            scanResults= new ArrayList<>();
+        }
         public String msg;
 
         public ArrayList<ScanResult> scanResults;
@@ -72,19 +77,20 @@ public class SkanService extends Service {
         ScanSettings.Builder settingBuilder = new ScanSettings.Builder();
         settingBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);;
         ScanSettings settings = settingBuilder.build();
-        PendingIntent callbackIntent = PendingIntent.getActivity(
-                this,
-                1,
-                new Intent("com.example.chaudfroid").setPackage(getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT );
         if (peripheralAddresses != null) {
             filters = new ArrayList<>();
+            /*ScanFilter filter = new ScanFilter.Builder()
+                    .setDeviceAddress("BE:AC:10:00:00:02")
+                    .build();
+            filters.add(filter);*/
             for (String address : peripheralAddresses) {
                 if (BluetoothAdapter.checkBluetoothAddress(address)) {
                     ScanFilter filter = new ScanFilter.Builder()
                             .setDeviceAddress(address)
                             .build();
                     filters.add(filter);
+                }else{
+                    filters=null;
                 }
             }
         }
@@ -93,13 +99,15 @@ public class SkanService extends Service {
             public void onScanResult(int callbackType, ScanResult result) {
                 super.onScanResult(callbackType, result);
                 if(scanBinder.scanResults.size()==5){
-                    scanBinder.scanResults.remove(5);
+                    scanBinder.scanResults.remove(4);
                 }
                 scanBinder.scanResults.add(0,result);
 
             }
         };
-        //bluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, callbackIntent);
+        //bluetoothAdapter.getBluetoothLeScanner().startScan(null, settings, scanCallback);
         bluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, scanCallback);
+        BluetoothLeScanner x=bluetoothAdapter.getBluetoothLeScanner();
+        Log.i("break",x.toString());
     }
 }
