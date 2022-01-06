@@ -22,7 +22,7 @@
             android:id="@+id/device_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,7 +32,7 @@
             android:id="@+id/mac_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/device_name"
             tools:text="MAC: XX:XX:XX:XX:XX" />
@@ -41,7 +41,7 @@
             android:id="@+id/signal_strength"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -83,7 +83,8 @@
             android:height="20dp"
             android:text="Adresse MAC"
             android:textAlignment="center"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editTextTextPersonName"
@@ -104,7 +105,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:baselineAligned="true"
-            android:visibility="invisible" />
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="50"
+            android:visibility="visible" />
     </LinearLayout>
 
     <FrameLayout
@@ -132,7 +136,24 @@
             android:gravity="center_horizontal"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:text="Sélectionnez quatre directions orthogonales pour les balises d’initialisation" />
+            android:text="Sélectionnez quatre directions orthogonales pour les balises d’initialisation"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="300dp"
+            android:gravity="center_horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
     </FrameLayout>
 

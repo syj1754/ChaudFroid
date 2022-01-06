@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ChaudFroid</string>
+    <string name="etape_1">Étape 1:Placez votre téléphone horizontalement sur votre poitrine, en gardant un bras à l’écart</string>
+    <string name="etape_2">Étape 2:Placez le téléphone horizontalement sur le côté droit, en gardant une longueur de bras écartée</string>
+    <string name="etape_3">Étape 3:Retournez-vous et placez le téléphone horizontalement sur votre poitrine, en gardant un bras écarté</string>
+    <string name="etape_4">Étape 4:Placez le téléphone horizontalement sur le côté gauche, en gardant une longueur de bras écartée</string>
+    <string name="etape_5">Étape 5:Placez votre téléphone horizontalement sur votre poitrine</string>
 </resources>
